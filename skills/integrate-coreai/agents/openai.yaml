@@ -1,0 +1,4 @@
+interface:
+  display_name: "Integrate Core AI"
+  short_description: "Add local AI to an existing Swift app"
+  default_prompt: "Use $integrate-coreai to add a local model to this Swift app using the matching CoreAIKit release and device variant."
