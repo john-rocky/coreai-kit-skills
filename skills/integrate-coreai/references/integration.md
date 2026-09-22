@@ -50,6 +50,7 @@ integration does not require changing the machine's global Xcode selection.
 | Specific speech recognizer | [Transcribe](https://github.com/john-rocky/coreai-kit/tree/0.4.1/Examples/Transcribe) | `KitTranscriber`; check preprocessing and the selected model |
 | Entity extraction / PII redaction | [InfoExtract](https://github.com/john-rocky/coreai-kit/tree/0.4.1/Examples/InfoExtract) | `InformationExtractor` or `CoreAI.redact`; read its separate task setup |
 | Task-level APIs | [Cookbook](https://github.com/john-rocky/coreai-kit/blob/0.4.1/docs/COOKBOOK.md) | `CoreAIOps`; some tasks route to Apple's system APIs |
+| Typed decisions (System One shape), 0.5.0+ | [Decide](https://github.com/john-rocky/coreai-kit/tree/0.5.0/Examples/Decide) | `CoreAI.decide` / `TypedDecisions`; `decide-cli serve` for a `/v1/systemone` client, 16 options per choice |
 
 The helper lists `catalog.json` entries only. Some task APIs have separate model
 configuration; absence from this catalog does not establish that the entire task

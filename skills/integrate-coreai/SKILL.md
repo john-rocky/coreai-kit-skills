@@ -56,6 +56,40 @@ for this task, at the selected package ref.
 - Keep the session alive for follow-up turns. Deliver the requested app change,
   not only a standalone demonstration that the app never calls.
 
+## System One on device (typed decisions)
+
+Use this when the app, or a client written for the hosted System One API, needs typed
+decisions — a `choice` of options, a `score` on ordered levels, a `noul` (the probability a
+statement holds) — answered by a model on the Mac or iPhone. Typed decisions entered
+CoreAIKit at **0.5.0**; the `/v1/systemone` server as a signed binary, and its MCP server, at
+**0.6.0**. The catalog kind is `decision` (`decider-0.8b`; `openthai-systemone` and
+`apus-openjev-v1-4b` from 0.6.0); the default decision model is the chat model `minicpm5-2b`.
+
+- In Swift, one call: `CoreAI.decide(state, questions)` (`CoreAIOps`), or `TypedDecisions`
+  for prefill-once / decide-N; from 0.6.0 an app serves the endpoint itself with
+  `SystemOneServer`. The whole uses (autofill, checklist, sorter, command guard, …) are in
+  `Examples/Decide` at the selected release.
+- For an existing client of the hosted endpoint, run the server on the Mac and point the
+  client's base URL at it; nothing else changes:
+
+  ```bash
+  brew install john-rocky/tap/systemone && systemone serve   # http://127.0.0.1:8090/v1/systemone, no Swift toolchain
+  export TYPESAFE_BASE_URL=http://127.0.0.1:8090 TYPESAFE_API_KEY=local   # the official TypeSafe SDKs; `system-one` on PyPI takes HTTPConfig(base_url=…)
+  python3 scripts/resolve_model.py --release 0.6.0 --platform macos --kind decision
+  ```
+
+  From a checkout the same server is `decide-cli serve` in `Examples/Decide`. For a coding
+  agent, `systemone mcp` serves the same decisions as MCP tools
+  (`claude mcp add systemone -- "$(brew --prefix)/bin/systemone" mcp`).
+- One declared difference from the hosted API: a choice lists at most **16** options over
+  `/v1/systemone` (a longer list returns `422` with a message that says so); the slot-head
+  `openthai-systemone` takes up to 255 through `TypedDecisions`. Scores take 2–10 levels, as
+  hosted.
+- The forms, the measured times and what the shape of a question does to a small model's
+  answer are in the release's `docs/SYSTEM_ONE.md`; `Examples/Decide/conformance/check.py
+  <base_url>` checks any server against the forms. Do not report a probability as calibrated
+  unless that model's card says how it was checked.
+
 ## Verify and report the result
 
 Use a Mac or a physical iPhone with the matching OS/SDK; CoreAI execution is not
